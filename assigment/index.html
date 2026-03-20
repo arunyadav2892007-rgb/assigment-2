@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Theme + Search History</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .light {
+            background: white;
+            color: black;
+        }
+
+        .dark {
+            background: #222;
+            color: white;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+        }
+
+        input {
+            padding: 10px;
+            width: 250px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Theme + Search History</h2>
+
+    <!-- Theme -->
+    <button onclick="setTheme('light')">Light</button>
+    <button onclick="setTheme('dark')">Dark</button>
+
+    <br><br>
+
+    <!-- Search -->
+    <input type="text" id="searchBox" placeholder="Search here">
+    <button onclick="saveSearch()">Search</button>
+    <button onclick="clearHistory()">Clear</button>
+
+    <h3>History:</h3>
+    <p id="history"></p>
+
+    <script>
+        // Load theme
+        let savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+            document.body.className = savedTheme;
+        }
+
+        function setTheme(mode) {
+            document.body.className = mode;
+            localStorage.setItem("theme", mode);
+        }
+
+        // Show history
+        function showHistory() {
+            let data = localStorage.getItem("history");
+
+            if (data) {
+                document.getElementById("history").innerText = data;
+            } else {
+                document.getElementById("history").innerText = "No history";
+            }
+        }
+
+        // Save search
+        function saveSearch() {
+            let value = document.getElementById("searchBox").value;
+
+            if (value === "") return;
+
+            let oldData = localStorage.getItem("history");
+
+            if (oldData) {
+                value = value + " | " + oldData; // separator
+            }
+
+            localStorage.setItem("history", value);
+
+            document.getElementById("searchBox").value = "";
+            showHistory();
+        }
+
+        // Clear history
+        function clearHistory() {
+            localStorage.removeItem("history");
+            showHistory();
+        }
+
+        // Load on start
+        showHistory();
+    </script>
+
+</body>
+</html>
